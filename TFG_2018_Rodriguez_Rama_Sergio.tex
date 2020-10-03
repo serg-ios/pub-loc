@@ -1,0 +1,329 @@
+\documentclass[11pt, a4paper, twoside, titlepage]{book}
+\newcommand\tab[1][0.3  cm]{\hspace*{#1}}
+% Paquetes usados
+
+\usepackage[a4paper, top=4cm, bottom=4cm, left=3.3cm, right=3.2cm]{geometry}
+%\usepackage[dvips]{graphicx} %%latex -> Usamos  .eps
+\usepackage{graphicx} %%pdflatex -> Usamos .jpg/.png
+\usepackage{fancyhdr}
+\usepackage{subfigure}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{eurosym}
+\usepackage{colortbl}
+\usepackage{rotating}
+
+\usepackage{caption}
+
+\usepackage{graphicx}
+\usepackage{tikz}
+
+\usetikzlibrary{patterns}
+
+\DeclareRobustCommand{\legendsquare}[1]{%
+  \tikz[baseline=(a.south)]{\node[#1, inner sep=.8ex, outer sep=0] (a) {};}%
+}
+
+\definecolor{mi_azul_oscuro}{RGB}{2,38,179}
+\definecolor{mi_naranja}{RGB}{255,120,0}
+\definecolor{mi_rosa_pastel}{RGB}{255,128,128}
+\definecolor{mi_dorado}{RGB}{179,168,0}
+\definecolor{mi_celeste}{RGB}{0,222,255}
+\definecolor{mi_verde_claro}{RGB}{150,250,1}
+\definecolor{mi_amarillo_claro}{RGB}{241,251,96}
+\definecolor{mi_rojo}{RGB}{255,37,0}
+\definecolor{mi_verde}{RGB}{13,179,0}
+
+
+
+
+\newcommand{\legendbox}[1]{%
+  \textcolor{#1}{\rule{\fontcharht\font`X}{\fontcharht\font`X}}%
+}
+
+%\usepackage{bera}% optional: just to have a nice mono-spaced font
+\usepackage{listings}
+\usepackage{xcolor}
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{FFFFFF}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{black!60!black}
+
+\lstdefinelanguage{json}{
+    basicstyle=\small\ttfamily\linespread{0.7},
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{background},
+    literate=
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+}
+
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstdefinelanguage{Swift}{
+  keywords={associatedtype, class, deinit, enum, extension, func, import, init, inout, internal, let, operator, private, protocol, public, static, struct, subscript, typealias, var, break, case, continue, default, defer, do, else, fallthrough, for, guard, if, in, repeat, return, switch, where, while, as, catch, dynamicType, false, is, nil, rethrows, super, self, Self, throw, throws, true, try, associativity, convenience, dynamic, didSet, final, get, infix, indirect, lazy, left, mutating, none, nonmutating, optional, override, postfix, precedence, prefix, Protocol, required, right, set, Type, unowned, weak, willSet},
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstdefinestyle{interfaces}{
+  float=tp,
+  floatplacement=tbp,
+  abovecaptionskip=5pt
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{white},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=1,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+
+\usepackage[draft]{todonotes}  %% CVR  draft/disable (borrador/definitivo)
+%\todo[inline]{comment}  %% CVR, para poner un comentario, [inline] es opcional
+%\listoftodos %% CVR, para mostrar todos los comentarios
+%\missingfigure{Add my picture here.}
+
+
+%\usepackage[latin1]{inputenc} %% CV
+\usepackage[utf8]{inputenc}  %% CVR
+%\usepackage[spanish]{babel} %% CVR
+\usepackage[spanish,activeacute]{babel} %% CVR
+
+\addto\extrasspanish{%
+  \renewcommand{\figureautorefname}{Figura}%
+  \renewcommand{\tableautorefname}{Tabla}%
+  \renewcommand{\lstlistingname}{Código}%
+  \renewcommand{\lstlistlistingname}{Índice de códigos}%
+}
+
+\usepackage{color}   %May be necessary if you want to color links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+}
+
+\newlist{cu}{enumerate}{1}
+\setlist[cu,1]{
+	label={\textbf{CU-\arabic*~}},
+	leftmargin=*
+	%align=left,
+	%labelsep=10mm,
+	%itemindent=4em
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{
+	language=Java,
+	showspaces=false,
+	showtabs=false,
+	breaklines=true,
+	showstringspaces=false,
+	breakatwhitespace=true,
+	frame=single,
+	tabsize=2,
+	commentstyle=\color{pgreen},
+	keywordstyle=\color{pblue},
+	stringstyle=\color{pred},
+	basicstyle=\ttfamily,
+	moredelim=[is][\color{pgrey}]{$$}{$$},
+	basicstyle=\footnotesize
+}
+
+
+% Aumentar la separación entre líneas
+\renewcommand{\baselinestretch}{1.5}
+
+
+% Para eliminar la cabecera de las páginas vacías al final de los
+% capítulos
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+  \hbox{}
+    \thispagestyle{empty}
+      \newpage
+        \if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother
+%%
+
+
+\begin{document}
+
+
+\pagestyle{empty}
+
+\include{capitulos/portada}
+\cleardoublepage
+
+% Numeración romana de páginas
+\pagenumbering{roman}
+
+
+% Especificación del pfc
+\include{capitulos/especificacion}
+
+% Dedicatoria y agradecimientos
+\include{capitulos/agradecimientos}
+
+
+
+% Resumen y palabras clave
+\include{capitulos/resumen}
+
+
+% Definimos el encabezado y pie de página
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{%
+\markboth{\thechapter.\ #1}{}}
+\renewcommand{\sectionmark}[1]{%
+\markright{\thesection.\ #1}{}}
+\fancyhead{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO,ER]{\rightmark}
+\fancyfoot{}
+
+
+% Índice de capítulos, secciones y subsecciones
+\cleardoublepage
+\pdfbookmark[0]{\contentsname}{toc}%
+\tableofcontents
+
+% Índice de figuras
+\cleardoublepage
+\phantomsection \label{listoffigures}
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+
+
+% Redefinición del nombre que encabeza las tablas. Por defecto es cuadro.
+\renewcommand\tablename{Tabla}
+\renewcommand\listtablename{Índice de tablas}
+
+% Índice de tablas 
+\cleardoublepage
+\phantomsection \label{listoftables}
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+\cleardoublepage
+
+
+\phantomsection \label{listoflstlistings}
+\addcontentsline{toc}{chapter}{\lstlistlistingname}
+\lstlistoflistings
+\cleardoublepage
+
+
+% Numeración normal de páginas
+\pagenumbering{arabic}
+
+
+% Definimos el encabezado y pie de página
+\fancyhead{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{\rightmark}
+\fancyhead[ER]{\leftmark}
+
+
+% Capítulo ejemplo LaTex (eliminar)
+\include{capitulos/cap1}
+
+% Capítulos "reales"
+
+\include{capitulos/introduccion}
+\include{capitulos/estado_arte}
+\include{capitulos/fundamentos}
+\include{capitulos/tecnologias}
+\include{capitulos/analisis}
+\include{capitulos/metodologia}
+\include{capitulos/planificacion}
+\include{capitulos/diseno}
+\include{capitulos/implementacion}
+\include{capitulos/pruebas}
+\include{capitulos/conclusiones}
+
+
+% Apéndices
+\appendix
+
+\include{capitulos/apen_instalacion}
+
+% \include{capitulos/apen_contenidoDVD}
+
+
+
+% Definimos el encabezado y pie de página
+\fancyhead{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO,ER]{\rightmark}
+
+% Glosario de términos
+%\printglossary
+
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Bibliografía}
+\cleardoublepage
+
+\bibliographystyle{IEEEtran}
+\bibliography{Zotero.bib}
+
+\end{document}

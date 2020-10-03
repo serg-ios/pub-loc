@@ -1,0 +1,124 @@
+\chapter{Conclusiones y trabajo futuro}
+En este capítulo se realizará una valoración final sobre lo que se hizo a lo largo de todo el proyecto, se hablará también de las lecciones aprendidas durante el desarrollo del mismo y finalmente, sobre el rumbo que podría tomar en el futuro.
+
+%% Conclusiones
+\section{Conclusiones}
+
+El resultado obtenido fue mejor de lo que se esperaba. Todos los requisitos se cumplieron con éxito e incluso se añadió alguno nuevo.
+
+En este trabajo se ha creado una plataforma para crear y gestionar publicidad geolocalizada. 
+El objetivo ha sido utilizar los teléfonos móviles como
+canal de comunicacion entre comercios y clientes.
+Por un lado, se emplea la información sobre la  posición de un usuario para lanzar notificaciones sobre ofertas y descuentos disponibles a su alrededor.
+Por otro lado, una vez dados de alta en el sistema, los propietarios de las tiendas pueden crear, gestionar y publicar sus propias ofertas y descuentos.
+
+\paragraph{Sistema modular y distribuido.} Se ha diseñado una arquitectura centralizada alrededor de un servicio de \emph{Backend} basado en una base de datos \emph{Firebase}, un sistema de localización basado en \emph{Situm} y una aplicación móvil \emph{iOS} que facilita el acceso a todo el sistema.
+De esta manera, sería relativamente simple sustituir algún componente o integrar nuevos servicios sin realizar grandes cambios en el sistema. También sería relativamente sencillo añadir una aplicación para el sistema operativo \emph{Android}.
+
+\paragraph{Intercambios en tiempo real.} El sistema ha sido diseñado alrededor de \emph{Firebase} con el objetivo de que las comunicaciones sean prácticamente intantáneas. Es decir, los cambios de los datos (posición, ofertas, canjeos, perfiles, etc.), se actualizan de forma prácticamente simultánea tanto en el servidor como en los teléfonos móviles.
+
+\paragraph{Sistema de roles.} Para facilitar la interacción entre los diferentes actores del sistema y evitar injerencias, se ha creado una jerarquía de roles para todos los usuarios.
+Los roles definidos son: administrador de la plataforma, gestor del centro comercial, propietario de una tienda, empleado de una tienda, cliente autenticado y cliente sin autenticar. 
+Cada rol tiene asociado acciones específicas, no accesibles al resto.
+De todos modos, en modo depuración se han desbloqueado todas las funcionalidades en algunas cuentas para tener un acceso sencillo a todas las acciones posible y facilitar las pruebas.
+
+\paragraph{Aplicación \emph{iOS}.} Es el componente encargado de acceder y gestionar toda la información de la plataforma.
+Dispone de una interfaz  sencilla y muy intuitiva para que el usuario no se sienta abrumado. Además, trata de seguir todas las líneas de diseño marcadas para el sistema \textit{iOS}.
+Cada usuario, en función de su rol, tendrá acceso a todas las acciones que puede realizar en la plataforma.
+
+\paragraph{Gestión de ofertas y tiendas.} Los datos generales de la aplicación se almacenan en \textit{Firebase}, especialmente toda la información sobre tiendas y ofertas. 
+Cualquier usuario podrá ver las tiendas y todas sus ofertas, pero sólo si está autenticado podrá indicar si le gusta o no.
+También cada usuario puede comprobar en su perfil que ofertas le gusta, cuales no, las que ha canjeado y aquellas con las que se ha cruzado.
+Sólo los gestores de centro comercial pueden añadir, modificar o eliminar una tienda dentro de la aplicación \emph{iOS}.
+Para gestionar las ofertas tiene que ser el propietario de la tienda. 
+Cualquier empleado de la tienda, puede canjear una oferta.
+
+\paragraph{Notificaciones.} Cada oferta tiene asociado un radio de acción y cuando un usuario está cerca, salta una notificación en su teléfono móvil, aunque la aplicación no esté en primer plano. 
+A partir de la notificación se podrá ver los detalles de la oferta.
+También se puede obtener un código \textit{QR} para canjear la oferta en la tienda. 
+Si el usuario no quiere ser molestado, podrá desactivar o silenciar las notificaciones de su móvil, pero sin miedo a perderse ninguna oferta, porque siempre que quiera podrá revisar las ofertas que le han llegado.
+
+\paragraph{Canjeo de ofertas.} Las ofertas se canjean por medio de códigos \emph{QR} creados (rol de usuario) y leídos (rol empleado) por la propia aplicación. La aplicación también deja constancia de qué usuarios han disfruta (canjeado) cada oferta.
+Como ya se ha comentado, en el perfil de cada usuario también se puede añadir qué ofertas le gustan o no.
+
+\paragraph{Ofertas con caducidad.} Se han diseñado ofertas que puedan tener una fecha de caducidad o un número de unidades limitadas. 
+También se han diseñado mecanismos para mantener la coherencia de la información (por ejemplo, si hay varios empleados canjeando ofertas). Las ofertas se canjean estrictamente en el orden de llegada.
+El objetivo de ambas funcionalidades ha sido incentivar el consumo, dado que al limitar el tiempo o el número de unidades disponible, se intenta crear la sensación de que debe aprovechar la oportunidad.
+
+\paragraph{Escaneo de ofertas con \textit{Siri}.} 
+Se ha implementado un atajo de \emph{Siri} para lanzar el escáner de códigos \emph{QR} mediante un comando de voz.
+De esta forma, el uso de la aplicación es más intuitiva y cómoda.
+Esta funcionalidad ha sido posible porque durante el desarrollo del proyecto \textit{Apple} ha lanzado la beta de \textit{iOS} 12, que permite asociar acciones de una aplicación con comandos de voz personalizados para ejecutarlos desde \textit{Siri}. 
+
+\paragraph{Sistema de localización del usuario.} Se ha integrado el servicio de localización de \textit{Situm}, que nos permite conocer la posición de un teléfono móvil tanto en exteriores (usando el GPS) como en interiores (una vez calibrado el edificio en cuestión).
+Sin embargo, debido a una conocida limitación de \textit{iOS} para acceder a cierta información sobre las señales \textit{WiFi}, la localización sólo es funcional si el entorno dispone de balizas \emph{Bluetooth}.
+Para simplificar la realización del proyecto, se decidió implementar un mecanismo para simular posiciones en el interior de edificios. 
+
+\paragraph{Pruebas finales exitosas.} Se han realizado diferentes pruebas en la Facultad de Informática de la Universidade da Coruña, incluyendo cambios de planta, que han demostrado la viabilidad de la propuesta realizada.
+También se ha realizado una encuesta a varios usuarios que han probado la aplicación \emph{iOS} en diferentes condiciones y con diferentes roles. Los resultados obtenidos son muy prometedores.
+
+
+
+%% Lecciones aprendidas
+\section{Lecciones aprendidas}
+A continuación, algunas de las lecciones aprendidas tras la realización de este proyecto.
+
+\paragraph{Dejar el diseño de la interfaz para el final.}
+Nunca se sabe que funcionalidades o limitaciones van a surgir a lo largo de todo el desarrollo, así que el apartado de diseño debe ser de lo último de lo que nos preocupemos.
+
+\paragraph{Ser organizados desde el principio.}
+Con las prisas se pierden buenos hábitos de programación: no se organizan los ficheros correctamente, se replica código, etcétera. Puede que ser ordenados nos consuma algo más de tiempo, pero a la larga se agradece.
+
+\paragraph{Ir tomando nota siempre.}
+Todos aquellos fallos o ideas que vayan surgiendo a lo largo del desarrollo deben anotarse. A veces pensamos que nos vamos a acordar seguro, pero rápidamente surgen otros problemas que nos hacen olvidarnos de los anteriores.
+
+\paragraph{Hacer \textit{commits} con frecuencia.}
+Al trabajar con más gente es normal que se hagan muchos \textit{commits} para ir dejando constancia al resto del equipo de lo que se va haciendo. Pero cuando se trabaja solo, se tiende a ser menos organizado con el control de versiones: \textit{commiteando} con menos frecuencia de la debida, no poniendo nombres adecuados a los \textit{commits}, etcétera.
+Esto provoca que muchas veces perdamos cambios importantes y dificulta la detección de fallos. Porque si hay muchas diferencias entre un \textit{commit} y su predecesor, nos costará más identificar un fallo concreto.
+
+\paragraph{El código en \textit{Backend} es esencial.}
+Trabajar contra un servidor que sólo nos permite almacenar la información es inviable, ya que con el tiempo surge la necesidad de ejecutar código porque van apareciendo  funcionalidades más complejas. Aunque existen servicios de \textit{Backend} externos, la opción que aporta una mayor flexibilidad siempre es utilizar nuestros propios servidores siempre que tengamos esa posibilidad.
+
+\paragraph{Documentarse bien antes de trabajar.}
+Es importante estudiar todas las maneras existentes de hacer algo antes de hacerlo. Sobre todo a la hora de externalizar una funcionalidad, debemos comparar las tarifas y funcionalidades que ofrece cada plataforma y escoger la que más se adapte a nuestras necesidades. Nunca hay que lanzarse de cabeza a una solución, sin explorar todas las alternativas.
+
+\paragraph{Intentar prescindir de librerías externas.}
+Lo más rápido a la hora de integrar una funcionalidad en la aplicación, es buscar una librería de terceros. Pero debemos evitar esto porque no conocemos la calidad ni la fiabilidad del código que estamos introduciendo en nuestro proyecto. Siempre debemos implementar nosotros mismos todo lo que podamos; aunque ralentice el desarrollo, con el tiempo lo agradeceremos, cogeremos más experiencia como desarrolladores y no usaremos código desconocido.
+
+Finalmente, acabaremos desarrollando nuestras propias librerías con las soluciones ingeniosas que le hayamos dado a los problemas que han ido apareciendo y podremos utilizarlas en todos nuestros proyectos futuros.
+
+\paragraph{Gestionar bien la memoria desde el principio.}
+No se debe esperar a que aparezcan los primeros \textit{crashes} por tener una mala gestión de la memoria. Debemos ir haciendo escaneos periódicos a la aplicación en busca de recursos que no se liberan correctamente, referencias circulares y fugas de memoria  \cite{leandro_perez_memory_nodate}.
+
+\paragraph{Pensar en la privacidad del cliente.}
+Con el planteamiento actual, se obliga al cliente a suministrar los planos y calibraciones de sus edificios al administrador de la plataforma para que los suba al \textit{Situm Dashboard}. Pueden perderse clientes potenciales por esto, ya que quizás no les guste tener que mediar siempre con el administrador de la plataforma.
+
+\paragraph{Tener en cuenta la legislación.}
+Antes de lanzar una aplicación al mercado, debe hacerse un estudio de las leyes de aquellos países en los que va a estar disponible. Porque si no, corremos el riesgo de inclumpir alguna ley o normativa y vernos metidos en un lío.
+
+Por ejemplo, hace poco se entró en vigor el Reglamento General de Protección de Datos, una de las diferencias con su predecesor es que no da por válido el consentimiento tácito para la recolección de datos del usuario. Todas las aplicaciones que pidan información personal al usuario, deben tenerlo en cuenta.
+
+% Trabajo futuro
+\section{Trabajo futuro}
+En esta sección, se hablará sobre algunas de las posibles mejoras a añadir en \textit{sprints} futuros.
+
+\paragraph{Rediseño del modelo con \textit{Cloud Functions}.}
+Cuando se empezó el proyecto, no se tenía en mente utilizar esta funcionalidad de \textit{Firebase}. Pero tras la incorporación al ciclo de desarrollo de una funcionalidad que necesitaba de la ejecución de código en servidor, se vio el potencial de esta herramienta.
+
+Muchas tareas que fueron implementadas únicamente con peticiones a la \textit{API REST} e incluso la propia estructura de la base de datos, podrían simplificarse gracias a esto, haciendo una aplicación más rápida y eficiente.
+
+\paragraph{Añadir un servicio de analítica.}
+Cuando una aplicación empieza a tener un volumen de usuarios considerable, debe incorporar herramientas de este tipo. Cuando hay un \textit{crash} en una aplicación y el sistema operativo la cierra, se produce una impresión muy negativa en el usuario. Por ello, es importante tener una herramienta que monitoree la aplicación y que proporcione información de los \textit{crashes} a los desarrolladores.
+
+También es interesante conocer como crece la aplicación, el número de nuevos usuarios diarios, el tiempo que pasa la gente de media en nuestra aplicación, etcétera. Todas estas estadísticas ayudan a comprender como actúa el cliente, y por lo tanto muy importante para mejorar.
+
+\paragraph{Probar otras plataformas de posicionamiento en interiores.}
+Gracias a que hemos diseñado la aplicación de forma modular, ahora somos libres de cambiar de servicio proveedor de localización, actualmente se utiliza \textit{Situm}, pero hay otros. Un posible \textit{sprint}, podría ser hacer un estudio de mercado y probar otras plataformas de localización en interiores para ver si encontramos alguna que nos guste más.
+
+%% Subir la aplicación a la App Store
+\subsection{Subir la aplicación a la \textit{App Store}}
+Finalmente, una vez se tenga un producto estable sin simulaciones, podría subirse una versión a la \textit{App Store}. Pero quedaría muy mal hacerlo sin centros comerciales, así que antes habría que buscar clientes interesados que nos diesen autorización para subir a nuestra plataforma sus planos y calibraciones.
+
+Habría que llevar a cabo un proceso de promoción previo al lanzamiento de la aplicación, contactar con varios centros comerciales, eventos, comerciantes, etcétera; para establecer un modelo de negocio. Calibrar los entornos, realizar pruebas reales, dar unas cuantas tiendas de alta, crear ofertas y establecer roles, preparar una buena inauguración. Todo esto es esencial para lanzar una aplicación de este tipo al mercado y que triunfe. Si se lanza vacía, la gente la va a descargar y según la abran y no vean nada, la borrarán de sus teléfonos y se quedarán con una impresión negativa de la \textit{app} para siempre.
+
+Este proyecto es demasiado ambicioso para una sola persona, lanzar y mantener una aplicación de este tipo necesitaría muchas horas de trabajo de todo un equipo. Por ello, este proyecto nunca tuvo como objetivo la creación de una aplicación real y comercializable. La finalidad siempre fue la de desarrollar un prototipo de lo que en un futuro podría llegar a ser una de las muchas utilidades de la incipiente tecnología de posicionamiento en interiores.

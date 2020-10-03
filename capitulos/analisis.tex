@@ -1,0 +1,139 @@
+\chapter{Análisis de requisitos}
+En este capítulo se hablará sobre los requisitos funcionales y no funcionales, así como de los actores y casos de uso que fueron implementados.
+\section{Requisitos funcionales}
+Estos requisitos son pedidos por el director de proyecto. Se fueron añadiendo nuevos a medida que avanzaba el desarrollo. La lista inicial de requisitos funcionales sería:
+\begin{enumerate}
+\item \textbf{Obtención de la posición del usuario:} Para saber en todo momento que ofertas de su interés hay a su alrededor.
+\item \textbf{Sistema de roles:} La aplicación tendrá acciones que sólo podrán llevar a cabo determinados usuarios.
+\item \textbf{Caja negra nos da nuestra posición:} Al incluir el \textit{SDK} de \textit{Situm} en nuestra aplicación y configurarlo adecuadamente, se envían los datos recogidos por los sensores a \textit{Situm} y nos llega nuestra posición. La forma en que se calcula nos es indiferente.
+\item \textbf{Gestión de tiendas y ofertas:} La propia aplicación tiene que permitir dar de alta/baja tiendas y crear/eliminar ofertas.
+\item \textbf{Aviso mediante notificaciones:} Para que un usuario sepa que hay una oferta de su interés cerca debe recibir una notificación en su teléfono.
+\item \textbf{Canjeo de las ofertas mediante códigos \textit{QR}:} Para dejar constancia de que un usuario a disfrutado de una oferta, con la propia aplicación usuarios con rol de empleado podrán leer los códigos \textit{QR} de los usuarios cliente.
+\end{enumerate}
+Otros requisitos funcionales que iban apareciendo y que se incorporaron al ciclo de desarrollo \textit{SCRUM} serían:
+\begin{enumerate}
+\item \textbf{Caducidad de las ofertas:} Nace esta funcionalidad con la intención de motivar al consumidor. Al darle un tiempo limitado a la oferta, crea en él la sensación de que debe aprovechar la oportunidad.
+\item \textbf{Número limitado de unidades:} Esta funcionalidad surge con la misma intención que la anterior, se motiva al cliente haciéndole ver en tiempo real como el número de unidades disponibles de una oferta va disminuyendo a medida que la gente va canjeado sus códigos \textit{QR}.
+\item \textbf{Atajo de \textit{Siri} para escanear oferta:} durante el desarrollo del proyecto, \textit{Apple} lanza la beta de \textit{iOS} 12, la cual permite asociar acciones de una aplicación con comandos de voz personalizados para ejecutarlos desde \textit{Siri}.\\Se añade al ciclo de desarrollo un nuevo requisito funcional: lanzar el escáner de códigos \textit{QR} utilizando un comando de voz de \textit{Siri}.
+\end{enumerate}
+\section{Requisitos no funcionales}
+Hay otro tipo de requisitos, que no hacen referencia a las funciones de la aplicación. Sino a la manera en que se desempeñan dichas funciones. Estos son llamados requisitos no funcionales, para este proyecto hemos fijado los siguientes:
+\begin{enumerate}
+\item \textbf{Tiempo real:} La aplicación tiene que comunicarse con \textit{Firebase} en tiempo real, teniendo los datos siempre actualizados sin necesidad de refrescar. De tal manera que las ofertas vayan apareciendo a medida que se crean.
+\item \textbf{Sistema distribuido:} La aplicación móvil es la que realiza todo el trabajo. La base de datos simplemente almacena la información y el servicio de \textit{Situm} recoge los datos de nuestros sensores y nos devuelve nuestra posición, como una caja negra. De esta manera, si más adelante queremos utilizar otros servicios, podríamos hacerlo sin realizar grandes cambios en la aplicación.
+\item \textbf{Interfaz intuitiva:} La interfaz debe ser sencilla e intuitiva para que el usuario no se sienta abrumado. Además, hay que tener en cuenta que prácticamente todas las aplicaciones \textit{iOS} tienen una línea de diseño que es aconsejable seguir \cite{noauthor_ios_nodate} .
+\item \textbf{Recursos del sistema:} Hay que tener en cuenta que la aplicación necesita tener el \textit{Bluetooth}, el \textit{WiFi} y el \textit{GPS} encendidos. La batería puede llegar a verse comprometida durante la ejecución, así que tendremos que programar de manera lo más eficiente posible para compensar.
+\end{enumerate}
+\section{Actores}
+Los usuarios interactuarán de manera diferente con la aplicación, dependiendo del rol que jueguen en la plataforma. Según el rol podrán realizar unas acciones u otras, pero la asignación de permisos es flexible, es decir, al darle permisos a un usuario con rol inferior, podemos darle permisos para todas las acciones o sólo para algunas.
+\begin{itemize}
+\item \textbf{Cliente sin autenticar:} Usuario que puede utilizar la aplicación para ver las ofertas disponibles, recibir notificaciones de las que tiene a su alrededor. No podrá realizar acciones que requieran autenticación: disfrutar ofertas, indicar si le gustan o no, revisar las ofertas recibidas y canjeadas.
+\item \textbf{Cliente autenticado:} Usuario que sí se ha dado de alta y puede realizar las acciones previamente comentadas. Podrá indicar si una oferta le gusta, o si por el contrario, prefiere ignorarla. Las ofertas sólo pueden aplicarse una vez por persona, por ello será necesaria la autenticación para poder disfrutar de ella. No podrá dar permisos a otros usuarios.
+\item \textbf{Empleado de tienda:} Usuario autenticado que se encargará de canjear el código \textit{QR} de las ofertas. Cada vez que escanee el código de una oferta, se realizará la acción necesaria en la base de datos, marcándola como disfrutada para ese usuario. No podrá dar permisos a otros usuarios.\\
+Quedará registrado en el sistema qué empleado ha canjeado el código \textit{QR}, a qué cliente y la fecha, por motivos de seguridad.
+\item \textbf{Propietario de tienda:} Usuario autenticado que podrá crear, eliminar o modificar ofertas dentro de su tienda. También podrá darle permisos de empleado a otro usuario autenticado.
+\item \textbf{Gerente de centro comercial:} Usuario autenticado que tiene la capacidad de crear, eliminar o modificar tiendas dentro del centro comercial que administra. También podrá darle permisos de propietario de tienda a otro usuario.
+\item \textbf{Administrador de la plataforma:} Usuario autenticado en la aplicación, cuya función característica será la de dar el rol de "Gestor de centro comercial" a aquellos usuarios que lo soliciten. Este individuo también tendrá acceso a la plataforma de \textit{Situm} y a la consola de \textit{Firebase}. Podrá añadir edificios, subir planos, modificar la base de datos a mano y realizar cualquier acción que le permita la plataforma de \textit{Firebase}. 
+\end{itemize}
+\newcounter{UseCase}
+\section{Casos de uso}
+A continuación se explican los diferentes casos de uso, separados según que actor los puede llevar a cabo.
+\subsection*{Casos de uso del Cliente sin autenticar (CL)}
+Este es el usuario que menos acciones podrá realizar, a continuación se presentan los casos de uso más básicos de la aplicación móvil.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CL Seleccionar un centro comercial:}
+Podrá ver un listado de todos los centros comerciales cuyo mapa está subido a la plataforma. Seleccionando uno podrá ver un listado de las tiendas que hay en él.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CL Seleccionar una tienda:}
+Del mismo modo podrá seleccionar una tienda para ver así las ofertas que hay disponibles en esta.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CL Seleccionar una oferta:}
+Una vez en el listado de ofertas, podrá seleccionar una para verla más en detalle, también se le mostrará aquí el código \textit{QR} necesario para canjearla. Si no estuviese autenticado, se le mostraría un botón para iniciar sesión con \textit{Google} en lugar del código \textit{QR}.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CL Ver mapa de todo el edificio:}
+El usuario podrá ver todo el edificio y un icono representando su posición si se encuentra ahí en ese momento. También podrá explorar las diferentes plantas del edificio y ver las ofertas que hay en ellas.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CL Seleccionar una oferta desde el mapa:}
+Las ofertas están representadas por chinchetas en el mapa, así que el usuario podrá seleccionar una para verla más en detalle del mismo modo que la seleccionaba desde la lista.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CL Ver oferta en el mapa:}
+Se abrirá el mapa otra vez, pero sólo mostrando la planta en la que se encuentra la oferta, y solamente su chincheta.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CL Recibir notificación:}
+A medida que cambia su posición, el usuario podrá recibir notificaciones si encuentra ofertas cercanas.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CL Desactivar las notificaciones:}
+Desde la pantalla de perfil, podrá desactivar las notificaciones si no quiere ser molestado.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CL Silenciar las notificaciones:}
+Desde la pantalla de perfil, podrá silenciar las notificaciones si quiere que le sigan llegando pero sin emitir ningún sonido.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CL Ver oferta en detalle desde la notificación:}
+Si se selecciona la notificación se accederá a la aplicación, visualizando en detalle la oferta como si la hubiésemos seleccionado en el mapa o en la lista.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CL Autenticarse:}
+Consiste en la autenticación del usuario mediante una cuenta de \textit{Google}, si ya tiene una en el teléfono no será necesario que introduzca la contraseña. Podrá hacerse desde el detalle de la oferta o en la pantalla de inicio de la aplicación.
+\subsection*{Casos de uso del Cliente autenticado (CA)}
+Podrá realizar las acciones del usuario sin autenticar y, a mayores, otras que requieren autenticación.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CA Cerrar sesión:}
+Desde la pantalla de perfil, el usuario autenticado podrá cerrar sesión.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CA Canjear oferta:} Las ofertas tienen asociado un código \textit{QR} para poder canjearlas. Así se controla que un mismo usuario no disfrute varias veces de una oferta que sólo puede canjearse una vez por persona.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CA Marcar como favorita una oferta:} Desde la pantalla de detalle de oferta, desde el listado de ofertas recibidas y desde el listado de ofertas rechazadas, el usuario podrá indicar que le gusta. Si anteriormente la había rechazado, al indicar que es de su agrado volverá a recibir notificaciones sobre esta.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CA Rechazar una oferta:} Desde la pantalla de detalle de oferta, desde el listado de ofertas favoritas y desde el listado de ofertas recibidas, el usuario podrá indicar que no le interesa y no se le volverá a notificar.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CA Ver ofertas favoritas:} El usuario podrá ver un listado de aquellas ofertas que previamente marcó como interesantes, pudiendo seleccionarlas para verlas en detalle y canjearlas. También desde aquí puede indicar que ya no le gustan o eliminarlas de la lista.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CA Ver ofertas rechazadas:} El usuario podrá ver un listado de aquellas ofertas que previamente rechazó, pudiendo seleccionarlas para verlas en detalle y canjearlas. También desde aquí podrá indicar que sí que le gustan o eliminarlas de la lista.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CA Ver ofertas canjeadas:} El usuario podrá ver un listado también de todas aquellas ofertas que canjeó. Además en la lista aparecerán indicadas aquellas ofertas que ya fueron canjeadas, para así no volver a intentar canjearlas. Esto además sirve de registro para posible reclamaciones futuras, por lo tanto no podrá eliminar ninguna oferta de la lista, quedarán ahí para siempre.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CA Ver ofertas recibidas:} El usuario podrá ver un listado de todas las ofertas por las que pasó, a modo de recordatorio, por si acaso no estaba atento al móvil o no tenía activadas las notificaciones. Podrá mandar las ofertas a favoritas o rechazarlas desde esta lista, también podrá eliminarlas de la lista sin ninguna opinión al respecto.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CA Eliminar oferta de usuario:} Estas ofertas serían todas aquellas que tienen relación con usuario autenticado: favoritas, rechazadas, canjeadas o recibidas. El usuario autenticado podría eliminar una oferta de cualquiera de estas listas (excepto de la de canjeadas), para limpiar la lista o porque le es indiferente. Se le seguiría notificando en caso de volver a cruzarse con ella.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-CA Ver detalle de oferta de usuario:} Si se selecciona una oferta de una de las listas comentadas en los cinco casos de uso anteriores, se muestra el detalle de la misma como si la hubiésemos seleccionado del listado de ofertas de una tienda o a través de una notificación.
+\subsection*{Casos de uso del  Empleado de la tienda (ET)}
+Además de poder realizar todas las acciones anteriores, también podrá llevar a cabo las siguientes.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-ET Canjear una oferta para un usuario:} A través de la pantalla de perfil, podrá abrir el escáner de códigos \textit{QR} para canjear una oferta a un cliente. Si el escaneo tiene éxito, el usuario no podrá volver a canjearla. El empleado sólo podrá canjear ofertas de la tienda en la que trabaja, cabiendo la posibilidad de que trabaje en varias tiendas.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-ET Canjear una oferta para un usuario a través de \textit{Siri}:} Este caso de uso es idéntico al anterior, salvo por el hecho de que en lugar de abrir el escáner pulsando un botón en pantalla, se abrirá cuando el empleado pronuncie la frase que el mismo asoció a esa acción.
+\subsection*{Casos de uso del Propietario de la tienda (PT)}
+Las acciones propias de los propietarios de tiendas serían las siguientes:
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-PT Crear oferta:}
+Podrá crear una oferta con los atributos correspondientes y situándola en el mapa. Sólo podrá crear ofertas en tiendas de su propiedad, cabiendo la posibilidad de que sea propietario de varias tiendas.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-PT Editar oferta:}
+El propietario de una tienda podrá modificar cuando crea conveniente cualquiera de los atributos de una oferta de ese establecimiento. Incluso podrá darle más tiempo a una oferta caducada o asignarle nuevas unidades a una oferta ya agotada.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-PT Eliminar oferta:}
+Podrá eliminar una oferta si ya no le interesa mostrarla al público. Podrá realizar esta acción en cualquier tienda de la que sea propietario.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-PT Dar rol de empleado a un usuario:} Podrá darle rol de empleado de alguna de sus tiendas a otro usuario que tiene que estar previamente autenticado.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-PT Quitar rol de empleado a un usuario:} Podrá quitarle el rol de empleado a algún usuario al que se lo había dado anteriormente.
+\subsection*{Casos de uso del Gestor de centro comercial (GC)}
+Las acciones propias de los gestores de centros comerciales serían las siguientes:
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-GC Crear tienda:} Podrá crear una tienda dentro de su centro comercial.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-GC Eliminar tienda:} Podrá eliminar una tienda de su centro comercial.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-GC Editar tienda:} Podrá modificar los atributos de una tienda de su centro comercial.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-GC Dar rol de propietario de tienda a un usuario:} Dicho usuario deberá estar previamente autenticado y sólo tendrá permisos sobre dicha tienda.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-GC Quitar rol de propietario de tienda a un usuario:} Podrá quitarle el rol de propietario de tienda a un usuario al que se lo había dado con anterioridad.
+\subsection*{Casos de uso del Administrador de la plataforma (AP)}
+Los acciones propias de los administradores de la plataforma serán:
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-AP Dar rol de gestor de centro comercial:} Podrán dar rol de gestor de centro comercial a un usuario previamente autenticado, en cualquier centro comercial.
+\stepcounter{UseCase}
+\subsubsection*{CU-\theUseCase-AP Quitar rol de administrador de centro comercial: } Podrán quitar el rol de administrador de centro comercial a un usuario.
+
+

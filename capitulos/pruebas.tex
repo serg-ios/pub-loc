@@ -1,0 +1,90 @@
+\chapter{Pruebas}
+En esta sección explicaremos las pruebas realizadas al final de cada \textit{sprint}, así como las herramientas utilizadas y un cuestionario de calidad.
+
+% Pruebas de final de sprint
+\section{Pruebas de final de \textit{sprint}}
+Al final de cada \textit{sprint} se han realizado las pruebas necesarias para verificar que las funcionalidades introducidas en el mismo, funcionan correctamente. Además, se suele dar un repaso a las funcionalidades anteriores para ver que se integran correctamente con las nuevas, surgiendo a veces nuevas ideas o soluciones que se introducen en el ciclo de desarrollo \textit{SCRUM}.
+
+\paragraph{\textit{Sprint} 1.} Se comprobó cuidadosamente que los planos obtenidos de \textit{Situm} se solapasen correctamente sobre el mapa de \textit{Google Maps}, sin pisarse los unos a los otros.
+
+\paragraph{\textit{Sprint} 2.} Se realizó un primer diseño de la estructura de base de datos, evitando las malas prácticas en las que se suele incurrir al diseñar un modelo no relacional. Aún a sabiendas de que esa estructura podría modificarse en un futuro, en caso de que apareciesen nuevas funcionalidades o se detectasen fallos.
+
+\paragraph{\textit{Sprint} 3.} Se probaron las operaciones \textit{CRUD} (\textit{create}, \textit{read}, \textit{update}, \textit{delete}) con ofertas y tiendas. Pero antes de nada, hubo que verificar que todas las peticiones funcionaban correctamente y que no alteraban la estructura de datos deseada en \textit{Firebase}, antes de incorporarlas a la aplicación.
+
+\paragraph{\textit{Sprint} 4.} Para comprobar que las notificaciones saltaban correctamente cuando un usuario entraba en el campo de acción de una oferta, hubo que generar un fichero \textit{JSON} con múltiples coordenadas, cada una de las cuales representaba un punto en una ruta a través de la Facultad de Informática de A Coruña (edificio utilizado para las pruebas).
+
+\paragraph{\textit{Sprint} 5.}Las pruebas consistieron en comprobar que ningún usuario podía acceder a funcionalidades que no eran propias de su rol.
+
+\paragraph{\textit{Sprint} 6.}Se puso especial atención al funcionamiento de las \textit{Cloud Functions} y los atajos de \textit{Siri}, puesto que ambas tecnologías se encuentran en estado de beta. Respecto al diseño de la interfaz, se realizaron pruebas en distintos tamaños de pantalla para ver como quedaría en los demás dispositivos de la marca, no sólo en el \textit{iPhone SE}.
+
+% Pruebas de caja negra
+\section{Pruebas de caja negra}
+A continuación se hablará sobre los módulos de la \textit{app} que pasaron por estas pruebas.
+
+\paragraph{Aplicación \textit{iOS}.}Para probar ciertos aspectos de la aplicación, se simulaban los datos antes de implementar la obtención de los mismos. Un ejemplo claro de esto es la simulación de la ubicación, utilizada para ver si las notificaciones se lanzaban correctamente.
+
+\paragraph{\textit{Firebase}.}Para probar como se estructuraban los datos en la base de datos, para verificar que los identificadores de los nodos se generaban de manera adecuada, o que no se permitía hacer peticiones a usuarios que no estaban autenticados, etcétera.
+
+Se utilizaron herramientas externas como \textit{Postman} para probar las peticiones antes de añadirlas de manera definitiva a la aplicación. También \textit{Firebase} permite añadir a mano nodos desde la consola, así podíamos probar que las \textit{Cloud Functions} hacían lo que se esperaba de ellas.
+
+% Cuestionarios de calidad
+\section{Cuestionarios de calidad}
+Se realizó un estudio con 10 usuarios de diferentes edades y gustos, la mayoría de ellos no estaban familiarizados con el desarrollo \textit{software}, pero todos encajaban en el perfil de posibles usuarios de una aplicación de este tipo, ver la tabla~\ref{tab:encuesta}.
+
+En la encuesta se valoraron las siguientes facetas de la aplicación:
+
+\begin{itemize}
+\item{}\textbf{Usabilidad.} Facilidad de uso que ofrece la aplicación para los nuevos usuarios que no la conocen.
+\item{}\textbf{Interfaz.} Impresión que ofrece a simple vista.
+\item{}\textbf{Funcionalidad.} Utilidad de la aplicación, comparándola con otras ya existentes en el mercado.
+\item{}\textbf{Rendimiento.} Fluidez, retardos al cargar los datos. Repercusión sobre los recursos del teléfono: batería, memoria, etcétera.
+\end{itemize}
+
+\begin{table}[tbp]
+\begin{center}
+\small
+\begin{tabular}{|l|c|}
+\hline 
+Preguntas & Valoración  \\
+\hline 
+\hline
+\textbf{Usabilidad} & \textbf{6/7} \\
+\hline
+¿Es intuitiva? & 6/7 \\
+\hline
+¿Es fácil de usar? & 7/7 \\
+\hline
+¿Es pequeña la curva de aprendizaje? & 5/7 \\
+\hline
+\textbf{Interfaz} & \textbf{6/7} \\ 
+\hline
+¿Tiene un diseño atractivo? & 6/7 \\
+\hline
+¿Es fácil moverse por la aplicación? & 6/7 \\
+\hline
+¿Se comprende en todo momento lo que hay en pantalla? & 6/7 \\
+\hline
+\textbf{Funcionalidad} & \textbf{7/7} \\ 
+\hline
+¿Te resulta útil? & 7/7 \\
+\hline
+¿La recomendarías a otras personas? & 7/7 \\
+\hline
+¿Ofrece funcionalidades que no habías visto nunca en una \textit{app}? & 7/7 \\
+\hline
+\textbf{Rendimiento} & \textbf{6/7} \\ 
+\hline
+¿Es fluida? & 6/7 \\
+\hline
+¿Tarda mucho en arrancar? & 5/7 \\
+\hline
+¿Afecta al rendimiento de tu teléfono móvil? & 7/7 \\
+\hline
+\end{tabular}
+\caption{Resultados de la encuesta.\label{tab:encuesta}}
+\end{center}
+\end{table}
+
+Como conclusión, en lo que destaca principalmente la \textit{app}, es en su utilidad. No existen muchas aplicaciones que ofrezcan este tipo de funcionalidades, y las personas que suelen ir de compras a menudo, la encuentran muy atractiva.
+
+Por otro lado, es lógico que no haya aplicaciones de este tipo, debido a la dificultad de su implantación.
